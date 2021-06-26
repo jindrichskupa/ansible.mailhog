@@ -1,38 +1,61 @@
-Role Name
+Mailhog Ansible Role
 =========
 
-A brief description of the role goes here.
+Create [mailhog](https://github.com/mailhog/MailHog/) instance with support for multiple instances.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
-
-Role Variables
---------------
-
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
-
-Dependencies
-------------
-
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+* debian based distribution
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```yaml
+---
+- name: Manage Docker Application Server
+  hosts: docker.example.com
+  remote_user: ansible
+  become: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  roles:
+    # full example
+    - role: jindrichskupa.ansible_mailhog
+      vars:
+        # mailhog binary install dir, default `/opt/mailhog`
+        mailhog_install_dir: /opt/mailhog
+        # mailhog binary version, default `1.0.0`
+        mailhog_version: 1.0.0
+        # mailhog sendmail binary version, default `0.2.0`
+        mhsendmail_version: 0.2.0
+        # address to listen, default is all interfaces
+        mailhog_listen_address: 0.0.0.0
+        # SMTP port to listen, default is `1025`
+        mailhog_smtp_port: 1025
+        # Web UI port to listen, default is `8025`
+        mailhog_http_port: 8025
+        # Mail storage, default is memory, but you can use: memory / mongodb / maildir
+        mailhog_storage: memory
+        # in case you choose to use maildir as storage
+        mailhog_maildir_path:
+        # in case you choose to user mongodb as storage
+        mailhog_mongo_host:
+        mailhog_mongo_port:
+        mailhog_mongo_collection:
+    # just enough example
+    - role: jindrichskupa.ansible_mailhog
+      vars:
+        mailhog_smtp_port: 1030
+        mailhog_http_port: 9030
+```
 
 License
 -------
 
-BSD
+MIT
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Jindrich Skupa
